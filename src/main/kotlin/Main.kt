@@ -1,12 +1,10 @@
-fun main(args: Array<String>) {
-    val parse = ParseadorArgumentos()
-    parse.parsearArgumentos(args)
-    /*
-    val appGestorCTS = AppGestorCTFS()
-    val conexion = Conexion()
-    val dataSource = DataSourceFactory.getDS(DataSourceFactory.DataSourceType.HIKARI)
+import sql.utils.DataSourceFactory
 
-    conexion.conectar(dataSource)
-    appGestorCTS.menu(dataSource, args)
-     */
+fun main(args: Array<String>) {
+    val dataSource = DataSourceFactory.getDS(DataSourceFactory.DataSourceType.HIKARI)
+    val argumentos = ParseadorArgumentos()
+    val comandos: Array<String> = argumentos.parsearArgumentos(args)
+
+    val app = AppCTFS()
+    app.menu(dataSource, comandos)
 }

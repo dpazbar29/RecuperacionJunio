@@ -3,52 +3,52 @@ import services.GrupoService
 import javax.sql.DataSource
 
 open class GestorCTFS {
-    fun funcionG(
-        args: Array<String>,
+    fun anadirGrupo(
+        comandos: Array<String>,
         grupoService: GrupoService,
     ) {
     }
 
-    fun funcionP(
-        args: Array<String>,
-        grupoService: GrupoService,
-        ctfService: CtfService,
-    ) {
-    }
-
-    fun funcionT(
-        args: Array<String>,
-        grupoService: GrupoService,
-    ) {
-    }
-
-    fun funcionE(
-        args: Array<String>,
+    fun anadirParticipacion(
+        comandos: Array<String>,
         grupoService: GrupoService,
         ctfService: CtfService,
     ) {
     }
 
-    fun funcionL(
-        args: Array<String>,
+    fun eliminarGrupo(
+        comandos: Array<String>,
+        grupoService: GrupoService,
+    ) {
+    }
+
+    fun eliminarParticipacion(
+        comandos: Array<String>,
         grupoService: GrupoService,
         ctfService: CtfService,
     ) {
     }
 
-    fun funcionC(
-        args: Array<String>,
+    fun mostrarInformacionGrupos(
+        comandos: Array<String>,
         grupoService: GrupoService,
         ctfService: CtfService,
     ) {
     }
 
-    fun funcionF(
-        args: Array<String>,
+    fun mostrarParticipacionGrupo(
+        comandos: Array<String>,
+        grupoService: GrupoService,
+        ctfService: CtfService,
+    ) {
+    }
+
+    fun procesamientoPorLotes(
+        comandos: Array<String>,
         dataSource: DataSource,
     ) {
     }
 
-    fun funcionI(dataSource: DataSource) {
+    fun interfazGrafica(dataSource: DataSource) {
     }
 }

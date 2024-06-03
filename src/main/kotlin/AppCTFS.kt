@@ -4,10 +4,10 @@ import services.CtfServiceImpl
 import services.GrupoServiceImpl
 import javax.sql.DataSource
 
-class AppCTFS(comando: ParseadorArgumentos) : GestorCTFS() {
+class AppCTFS() : GestorCTFS() {
     fun menu(
         dataSource: DataSource,
-        args: Array<String>,
+        comandos: Array<String>,
     ) {
         val grupoDao = GrupoDAOH2(dataSource)
         val ctfDao = CtfDAOH2(dataSource)
@@ -15,17 +15,15 @@ class AppCTFS(comando: ParseadorArgumentos) : GestorCTFS() {
         val grupoService = GrupoServiceImpl(grupoDao)
         val ctfService = CtfServiceImpl(ctfDao)
 
-        val comando = args[0]
-
-        when (comando) {
-            "-g" -> funcionG(args, grupoService)
-            "-p" -> funcionP(args, grupoService, ctfService)
-            "-t" -> funcionT(args, grupoService)
-            "-e" -> funcionE(args, grupoService, ctfService)
-            "-l" -> funcionL(args, grupoService, ctfService)
-            "-c" -> funcionC(args, grupoService, ctfService)
-            "-f" -> funcionF(args, dataSource)
-            "-i" -> funcionI(dataSource)
+        when (comandos[0]) {
+            "-g" -> anadirGrupo(comandos, grupoService)
+            "-p" -> anadirParticipacion(comandos, grupoService, ctfService)
+            "-t" -> eliminarGrupo(comandos, grupoService)
+            "-e" -> eliminarParticipacion(comandos, grupoService, ctfService)
+            "-l" -> mostrarInformacionGrupos(comandos, grupoService, ctfService)
+            "-c" -> mostrarParticipacionGrupo(comandos, grupoService, ctfService)
+            "-f" -> procesamientoPorLotes(comandos, dataSource)
+            "-i" -> interfazGrafica(dataSource)
         }
     }
 }
