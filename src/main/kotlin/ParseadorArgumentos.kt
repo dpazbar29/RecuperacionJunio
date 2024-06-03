@@ -1,6 +1,3 @@
-import java.util.IllegalFormatConversionException
-import kotlin.Exception
-
 @Suppress("ktlint:standard:max-line-length")
 class ParseadorArgumentos: Salida {
     fun parsearArgumentos(args: Array<String>): Array<String> {
