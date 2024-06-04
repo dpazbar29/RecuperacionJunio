@@ -9,6 +9,6 @@ fun main(args: Array<String>) {
     val argumentos = ParseadorArgumentos()
     val comandos: Array<String> = argumentos.parsearArgumentos(args)
 
-    val app = AppCTFS()
+    val app = GestorCTFS()
     app.menu(dataSource, comandos)
 }

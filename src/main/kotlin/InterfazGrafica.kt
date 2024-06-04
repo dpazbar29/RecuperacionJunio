@@ -14,6 +14,9 @@ import androidx.compose.ui.window.application
 import dao.CtfDAOH2
 import dao.GrupoDAOH2
 import dao.entity.GrupoEntity
+import services.CtfService
+import services.CtfServiceImpl
+import services.GrupoServiceImpl
 import java.io.File
 import javax.sql.DataSource
 
@@ -40,11 +43,12 @@ class InterfazGrafica() {
             Button(
                 onClick = {
                     val grupoDAO = GrupoDAOH2(dataSource)
+                    val grupoService = GrupoServiceImpl(grupoDAO, dataSource)
                     grupos =
                         if (text.isBlank()) {
                             grupoDAO.obtenerTodo()
                         } else {
-                            val grupo = grupoDAO.obtenerPorID(text.toInt())
+                            val grupo = grupoService.obtenerPorID(text.toInt())
                             if (grupo != null) listOf(grupo) else emptyList()
                         }
                     text = ""
@@ -57,7 +61,8 @@ class InterfazGrafica() {
             Button(
                 onClick = {
                     val ctfDAO = CtfDAOH2(dataSource)
-                    exportarClasificacionFinal(ctfDAO, "clasificacion_final.txt")
+                    val ctfService = CtfServiceImpl(ctfDAO, dataSource)
+                    exportarClasificacionFinal(ctfService, "clasificacion_final.txt")
                 },
                 modifier = Modifier.padding(8.dp).width(150.dp),
             ) {
@@ -75,19 +80,19 @@ class InterfazGrafica() {
     }
 
     private fun exportarClasificacionFinal(
-        ctfDAO: CtfDAOH2,
+        ctfService: CtfService,
         nombreArchivo: String,
     ) {
-        val ctfs = ctfDAO.obtenerTodo()
+        val ctfs = ctfService.obtenerTodo()
         val exportContent = StringBuilder()
 
         ctfs.forEach { ctf ->
             exportContent.append("CTF: ${ctf.ctfID}\n")
             val participaciones =
-                ctfDAO.obtenerTodo()
+                ctfService.obtenerTodo()
 
             participaciones.forEachIndexed { index, participacion ->
-                val grupos = ctfDAO.obtenerPorIDGrupo(participacion.grupoID)
+                val grupos = ctfService.obtenerPorIDGrupo(participacion.grupoID)
                 for (grupo in grupos) {
                     exportContent.append("${index + 1}. ${grupo.grupoID} (${participacion.puntuacion})\n")
                 }
