@@ -202,6 +202,11 @@ class CtfServiceImpl(private val ctfDAO: CtfDAO, private val dataSource: DataSou
         return null
     }
 
+    /**
+     * Método que obtiene los ID de los diferentes CTFS que existen
+     *
+     * @return MutableList<Int>: Devuelve los ID pedidos
+     */
     override fun obtenerIDCtfs(): MutableList<Int> {
         val ctfIDsRepetidos = obtenerTodo()
         val ctfIDs: MutableList<Int> = mutableListOf()
