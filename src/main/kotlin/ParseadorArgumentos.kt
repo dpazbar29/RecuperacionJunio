@@ -1,19 +1,20 @@
 @Suppress("ktlint:standard:max-line-length")
-class ParseadorArgumentos: Salida {
+class ParseadorArgumentos : Salida {
     fun parsearArgumentos(args: Array<String>): Array<String> {
-        val comandos: Array<String> = when (args[0]) {
-            "-g" -> comandoG(args)
-            "-p" -> comandoP(args)
-            "-t" -> comandoT(args)
-            "-e" -> comandoE(args)
-            "-l" -> comandoL(args)
-            "-c" -> comandoC(args)
-            "-f" -> comandoF(args)
-            "-i" -> comandoI(args)
-            else -> {
-                throw IllegalArgumentException("Comando desconocido: ${args[0]}")
+        val comandos: Array<String> =
+            when (args[0]) {
+                "-g" -> comandoG(args)
+                "-p" -> comandoP(args)
+                "-t" -> comandoT(args)
+                "-e" -> comandoE(args)
+                "-l" -> comandoL(args)
+                "-c" -> comandoC(args)
+                "-f" -> comandoF(args)
+                "-i" -> comandoI(args)
+                else -> {
+                    throw IllegalArgumentException("Comando desconocido: ${args[0]}")
+                }
             }
-        }
         return comandos
     }
 
@@ -40,7 +41,7 @@ class ParseadorArgumentos: Salida {
         }
         try {
             args[1].toInt()
-        }catch (e:NumberFormatException) {
+        } catch (e: NumberFormatException) {
             val id = "grupoID"
             val salida = mensajeErrorTipo(id)
             throw NumberFormatException(salida)
@@ -55,7 +56,7 @@ class ParseadorArgumentos: Salida {
         }
         try {
             args[1].toInt()
-        }catch (e:NumberFormatException) {
+        } catch (e: NumberFormatException) {
             val id = "grupoID"
             val salida = mensajeErrorTipo(id)
             throw NumberFormatException(salida)
@@ -71,7 +72,7 @@ class ParseadorArgumentos: Salida {
         try {
             args[1].toInt()
             args[2].toInt()
-        }catch (e: NumberFormatException) {
+        } catch (e: NumberFormatException) {
             val id = "grupoID y ctfID"
             val salida = mensajeErrorTipo(id)
             throw NumberFormatException(salida)
@@ -80,18 +81,11 @@ class ParseadorArgumentos: Salida {
     }
 
     private fun comandoG(args: Array<String>): Array<String> {
-        if (args.size != 3) {
+        if (args.size != 2) {
             val salida = mensajeErrorNumeroParametros()
             throw IllegalArgumentException(salida)
         }
-        try {
-            args[1].toInt()
-        }catch (e: NumberFormatException) {
-            val id = "grupoID"
-            val salida = mensajeErrorTipo(id)
-            throw NumberFormatException(salida)
-        }
-        return arrayOf(args[0], args[1], args[2])
+        return arrayOf(args[0], args[1])
     }
 
     private fun comandoP(args: Array<String>): Array<String> {
@@ -102,7 +96,7 @@ class ParseadorArgumentos: Salida {
         try {
             args[1].toInt()
             args[2].toInt()
-        }catch (e: NumberFormatException) {
+        } catch (e: NumberFormatException) {
             val id = "grupoID y ctfID"
             val salida = mensajeErrorTipo(id)
             throw NumberFormatException(salida)
@@ -117,7 +111,7 @@ class ParseadorArgumentos: Salida {
         }
         try {
             args[1].toInt()
-        }catch (e: NumberFormatException){
+        } catch (e: NumberFormatException) {
             val id = "grupoID"
             val salida = mensajeErrorTipo(id)
             throw NumberFormatException(salida)

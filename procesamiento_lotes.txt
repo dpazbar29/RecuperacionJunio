@@ -1,9 +1,9 @@
 # Comentario de la línea. Las opciones son: -g, -p, -t, -e, -l, -c, y pueden o no estar en fichero.
 # Crea grupos, podrá tener tantas líneas como quiera
 -g
-1;1DAM-G1
-1;1DAM-G2
-1;1DAM-G3
+1DAM-G1
+1DAM-G2
+1DAM-G3
 
 # Añade/Actualiza participaciones, podrá tener tantas líneas como quiera
 -p

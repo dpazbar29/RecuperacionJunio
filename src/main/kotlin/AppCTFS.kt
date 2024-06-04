@@ -9,13 +9,21 @@ interface AppCTFS : Salida {
         comandos: Array<String>,
         grupoService: GrupoService,
     ) {
-        val grupoID = comandos[1].toInt()
-        val grupoDesc = comandos[2]
+        val grupoDesc = comandos[1]
         val posicion = null
+
+        // Obtener el siguiente grupoID disponible
+        val gruposExistentes = grupoService.obtenerTodo()
+        val grupoID =
+            if (gruposExistentes.isEmpty()) {
+                1
+            } else {
+                gruposExistentes.maxOf { it.grupoID } + 1
+            }
 
         val grupo = GrupoEntity(grupoID, grupoDesc, posicion)
         grupoService.crear(grupo)
-        mensajeCreacionGrupo(comandos[2])
+        mensajeCreacionGrupo(grupoDesc)
     }
 
     fun anadirParticipacion(
@@ -187,7 +195,10 @@ interface AppCTFS : Salida {
         val procesador = ProcesadorFicheros()
         val rutaFichero = comandos[1]
         val nuevosComandos = procesador.procesarFichero(rutaFichero)
-        println(nuevosComandos)
+        val app = GestorCTFS()
+        for (comandoExtraido in nuevosComandos) {
+            app.menu(dataSource, comandoExtraido.toTypedArray())
+        }
     }
 
     fun interfazGrafica(dataSource: DataSource) {
