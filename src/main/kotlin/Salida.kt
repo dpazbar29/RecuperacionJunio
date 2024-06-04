@@ -11,26 +11,26 @@ interface Salida {
         return ("ERROR: El parámetro <$id> debe ser un valor numérico de tipo entero.")
     }
 
-    fun mensajeCreacionGrupo(grupo: String): String {
-        return ("Procesado: Añadido el grupo '$grupo'.")
+    fun mensajeCreacionGrupo(grupo: String) {
+        println ("Procesado: Añadido el grupo '$grupo'.")
     }
 
-    private fun mensajeCreacionParticipacion(
+    fun mensajeCreacionParticipacion(
         grupo: String,
         idCtf: Int,
         puntuacion: Int,
-    ): String {
-        return ("Procesado: Añadida participación del grupo '$grupo' en el CTF $idCtf con una puntuación de $puntuacion puntos.")
+    ) {
+        println("Procesado: Añadida participación del grupo '$grupo' en el CTF $idCtf con una puntuación de $puntuacion puntos.")
     }
 
-    private fun mensajeEliminacionParticipacion(
+    fun mensajeEliminacionParticipacion(
         grupo: String,
         idCtf: Int,
-    ): String {
-        return ("Procesado: Eliminada participación del grupo '$grupo' en el CTF $idCtf.")
+    ) {
+        println("Procesado: Eliminada participación del grupo '$grupo' en el CTF $idCtf.")
     }
 
-    fun mensajeEliminacionGrupo(grupo: String): String {
-        return ("Procesado: Eliminada el grupo '$grupo' y su participación en los CTFs")
+    fun mensajeEliminacionGrupo(grupo: String){
+        println("Procesado: Eliminada el grupo '$grupo' y su participación en los CTFs")
     }
 }
