@@ -184,6 +184,10 @@ interface AppCTFS : Salida {
         comandos: Array<String>,
         dataSource: DataSource,
     ) {
+        val procesador = ProcesadorFicheros()
+        val rutaFichero = comandos[1]
+        val nuevosComandos = procesador.procesarFichero(rutaFichero)
+        println(nuevosComandos)
     }
 
     fun interfazGrafica(dataSource: DataSource) {

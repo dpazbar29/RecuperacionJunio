@@ -12,7 +12,7 @@ interface Salida {
     }
 
     fun mensajeCreacionGrupo(grupo: String) {
-        println ("Procesado: Añadido el grupo '$grupo'.")
+        println("Procesado: Añadido el grupo '$grupo'.")
     }
 
     fun mensajeCreacionParticipacion(
@@ -30,7 +30,11 @@ interface Salida {
         println("Procesado: Eliminada participación del grupo '$grupo' en el CTF $idCtf.")
     }
 
-    fun mensajeEliminacionGrupo(grupo: String){
+    fun mensajeEliminacionGrupo(grupo: String)  {
         println("Procesado: Eliminada el grupo '$grupo' y su participación en los CTFs")
+    }
+
+    fun mensajeFicheroInexistente(fichero: String): String {
+        return ("El fichero no existe: $fichero")
     }
 }
