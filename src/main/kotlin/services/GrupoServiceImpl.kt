@@ -2,14 +2,16 @@ package services
 
 import dao.CtfDAO
 import dao.GrupoDAO
+import dao.entity.CtfEntity
 import dao.entity.GrupoEntity
+import javax.sql.DataSource
 
 /**
  * Clase que emplea los métodos del Servicio del Grupo
  *
  * @property grupoDAO: objeto del DAO del grupo donde se lleva a cabo el código de estas funciones
  */
-class GrupoServiceImpl(private val grupoDAO: GrupoDAO) : GrupoService {
+class GrupoServiceImpl(private val grupoDAO: GrupoDAO, private val dataSource: DataSource) : GrupoService {
     /**
      * Método que crea un nuevo grupo con sus datos correspondientes
      *
@@ -55,7 +57,24 @@ class GrupoServiceImpl(private val grupoDAO: GrupoDAO) : GrupoService {
      * @return GrupoEntity?: Devuelve el grupo cuyo ID se ha dado
      */
     override fun obtenerPorID(id: Int): GrupoEntity? {
-        return grupoDAO.obtenerPorID(id)
+        val sqlID = "SELECT * FROM GRUPOS WHERE grupoID = ?;"
+
+        return dataSource.connection.use { connID ->
+            connID.prepareStatement(sqlID).use { stmtID ->
+                stmtID.setInt(1, id)
+
+                val rs = stmtID.executeQuery()
+                if (rs.next()) {
+                    GrupoEntity(
+                        grupoID = rs.getInt("grupoID"),
+                        grupoDesc = rs.getString("grupodesc"),
+                        mejorPosCtfID = rs.getInt("mejorposCTFid"),
+                    )
+                } else {
+                    null
+                }
+            }
+        }
     }
 
     /**
@@ -65,10 +84,33 @@ class GrupoServiceImpl(private val grupoDAO: GrupoDAO) : GrupoService {
      * @param ctfDAO: DAO del ctf del cuál se sacarán los datos
      * @return Int: devuelve el número de la posición mejor del grupo
      */
+
     override fun obtenerMejorPosCTFIdParaGrupo(
         grupoId: Int,
-        ctfDAO: CtfDAO,
+        ctfService: CtfService,
     ): Int {
-        return grupoDAO.obtenerMejorPosCTFIdParaGrupo(grupoId, ctfDAO)
+        var id: Int = 0
+        var posicion = Int.MAX_VALUE // Valor máximo de un entero para que siempre sea mayor que la primera posición que se analice
+        var puntuacion = 0
+        val participaciones: List<CtfEntity> = ctfService.obtenerPorIDGrupo(grupoId)
+
+        for (participacion in participaciones) {
+            val posicionVariable = ctfService.obtenerPosicionGrupoEnCtf(participacion.grupoID, participacion.ctfID)
+            if (posicionVariable != null) {
+                if (posicionVariable < posicion) {
+                    posicion = posicionVariable
+                    id = participacion.ctfID
+                } else if (posicionVariable == posicion) {
+                    val puntuacionVariable = ctfService.obtenerPuntuacionPorIDGrupoIDCtf(participacion.grupoID, participacion.ctfID)
+                    if (puntuacionVariable > puntuacion)
+                    {
+                        puntuacion = puntuacionVariable
+                        id = participacion.ctfID
+                    }
+                }
+            }
+        }
+
+        return id
     }
 }

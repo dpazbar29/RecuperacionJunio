@@ -54,6 +54,6 @@ interface GrupoService {
      */
     fun obtenerMejorPosCTFIdParaGrupo(
         grupoId: Int,
-        ctfDAO: CtfDAO,
+        ctfService: CtfService,
     ): Int
 }
