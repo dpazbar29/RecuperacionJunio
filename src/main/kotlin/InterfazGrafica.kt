@@ -1,3 +1,5 @@
+@file:Suppress("ktlint:standard:no-wildcard-imports")
+
 import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -13,9 +15,11 @@ import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
 import dao.CtfDAOH2
 import dao.GrupoDAOH2
+import dao.entity.CtfEntity
 import dao.entity.GrupoEntity
 import services.CtfService
 import services.CtfServiceImpl
+import services.GrupoService
 import services.GrupoServiceImpl
 import java.io.File
 import javax.sql.DataSource
@@ -61,8 +65,12 @@ class InterfazGrafica() {
             Button(
                 onClick = {
                     val ctfDAO = CtfDAOH2(dataSource)
+                    val grupoDAO = GrupoDAOH2(dataSource)
+
                     val ctfService = CtfServiceImpl(ctfDAO, dataSource)
-                    exportarClasificacionFinal(ctfService, "clasificacion_final.txt")
+                    val grupoService = GrupoServiceImpl(grupoDAO, dataSource)
+
+                    exportarClasificacionFinal(ctfService, grupoService, "clasificacion_final.txt")
                 },
                 modifier = Modifier.padding(8.dp).width(150.dp),
             ) {
@@ -81,8 +89,47 @@ class InterfazGrafica() {
 
     private fun exportarClasificacionFinal(
         ctfService: CtfService,
+        grupoService: GrupoService,
         nombreArchivo: String,
     ) {
+        val exportarContenido = StringBuilder()
+
+        val grupos: List<GrupoEntity> = grupoService.obtenerTodo()
+
+        val ctfIDs = ctfService.obtenerIDCtfs()
+
+        for (ctfID in ctfIDs) {
+            val ctf: CtfEntity? = ctfService.obtenerPorIDCtf(ctfID)
+
+            exportarContenido.append("Procesando: Listado participación en el CTF '${ctf?.ctfID}' ")
+            exportarContenido.append("\n")
+            exportarContenido.append("GRUPO    | PUNTUACIÓN ")
+            exportarContenido.append("\n")
+            exportarContenido.append("----------------------")
+            exportarContenido.append("\n")
+
+            val puntuaciones = mutableListOf<Pair<String, Int>>()
+
+            for (grupo in grupos) {
+                var puntuacion = 0
+                if (ctf != null) {
+                    puntuacion = ctfService.obtenerPuntuacionPorIDGrupoIDCtf(grupo.grupoID, ctf.ctfID)
+                }
+                puntuaciones.add(Pair(grupo.grupoDesc, puntuacion))
+            }
+
+            val puntuacionesOrdenadas = puntuaciones.sortedByDescending { it.second }
+
+            for ((grupoDesc, puntuacion) in puntuacionesOrdenadas) {
+                if (puntuacion != 0) {
+                    exportarContenido.append("$grupoDesc  | $puntuacion")
+                    exportarContenido.append("\n")
+                }
+            }
+            exportarContenido.append("\n")
+        }
+        File(nombreArchivo).writeText(exportarContenido.toString())
+        /*
         val ctfs = ctfService.obtenerTodo()
         val exportContent = StringBuilder()
 
@@ -101,6 +148,8 @@ class InterfazGrafica() {
         }
 
         File(nombreArchivo).writeText(exportContent.toString())
+
+         */
     }
 
     fun start(dataSource: DataSource) {

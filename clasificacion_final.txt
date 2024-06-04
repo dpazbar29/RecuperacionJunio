@@ -1,0 +1,17 @@
+Procesando: Listado participación en el CTF '1' 
+GRUPO    | PUNTUACIÓN 
+----------------------
+1DAM-G3  | 140
+1DAW-G2  | 110
+1DAM-G1  | 100
+
+Procesando: Listado participación en el CTF '2' 
+GRUPO    | PUNTUACIÓN 
+----------------------
+1DAW-G3  | 210
+1DAM-G3  | 190
+1DAW-G1  | 170
+1DAW-G2  | 130
+1DAM-G1  | 120
+1DAM-G2  | 100
+

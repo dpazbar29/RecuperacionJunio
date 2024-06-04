@@ -1,14 +1,10 @@
-import dao.CtfDAOH2
-import dao.GrupoDAOH2
 import dao.entity.CtfEntity
 import dao.entity.GrupoEntity
 import services.CtfService
-import services.CtfServiceImpl
 import services.GrupoService
-import services.GrupoServiceImpl
 import javax.sql.DataSource
 
-interface AppCTFS: Salida {
+interface AppCTFS : Salida {
     fun anadirGrupo(
         comandos: Array<String>,
         grupoService: GrupoService,
@@ -32,19 +28,19 @@ interface AppCTFS: Salida {
         val puntuacion = comandos[3].toInt()
 
         val participacionGrupo = CtfEntity(ctfID, grupoID, puntuacion)
-        val grupo =ctfService.obtenerPorIDGrupoIDCtf(grupoID, ctfID)
+        val grupo = ctfService.obtenerPorIDGrupoIDCtf(grupoID, ctfID)
 
-        //Parte posiblemente eliminable
+        // Parte posiblemente eliminable
         if (grupo != null) {
             val grupoActualizado = CtfEntity(grupo.ctfID, grupo.grupoID, puntuacion)
             ctfService.actualizar(grupoActualizado)
         } else {
             ctfService.crear(participacionGrupo)
         }
-        //Hasta aquí
+        // Hasta aquí
 
         // ctfService.crear(participacionGrupo)
-        val posicion =grupoService.obtenerMejorPosCTFIdParaGrupo(grupoID, ctfService)
+        val posicion = grupoService.obtenerMejorPosCTFIdParaGrupo(grupoID, ctfService)
         val datosGrupo = grupoService.obtenerPorID(grupoID)
 
         if (datosGrupo != null) {
@@ -52,7 +48,7 @@ interface AppCTFS: Salida {
             grupoService.actualizar(grupoActualizacion)
         }
 
-        mensajeCreacionParticipacion(datosGrupo?.grupoDesc ?: "Desconocido", grupoID, puntuacion)
+        mensajeCreacionParticipacion(datosGrupo?.grupoDesc ?: "Desconocido", ctfID, puntuacion)
     }
 
     fun eliminarGrupo(
@@ -86,7 +82,7 @@ interface AppCTFS: Salida {
         grupoService.actualizar(grupoActualizacion)
 
         if (grupo != null) {
-            mensajeEliminacionParticipacion(grupo.grupoDesc, grupoID)
+            mensajeEliminacionParticipacion(grupo.grupoDesc, ctfID)
         }
     }
 
@@ -95,7 +91,7 @@ interface AppCTFS: Salida {
         grupoService: GrupoService,
         ctfService: CtfService,
     ) {
-        mostrarDatosGruposConsola(comandos, grupoService, ctfService) //DUDA
+        mostrarDatosGruposConsola(comandos, grupoService, ctfService) // DUDA
     }
 
     private fun mostrarTodosLosGrupos(
@@ -147,7 +143,7 @@ interface AppCTFS: Salida {
         grupoService: GrupoService,
         ctfService: CtfService,
     ) {
-        mostrarDatosCTFConsola(comandos, grupoService, ctfService) //DUDA
+        mostrarDatosCTFConsola(comandos, grupoService, ctfService) // DUDA
     }
 
     private fun mostrarDatosCTFConsola(
@@ -178,7 +174,9 @@ interface AppCTFS: Salida {
         val puntuacionesOrdenadas = puntuaciones.sortedByDescending { it.second }
 
         for ((grupoDesc, puntuacion) in puntuacionesOrdenadas) {
-            println("$grupoDesc  | $puntuacion")
+            if (puntuacion != 0) {
+                println("$grupoDesc  | $puntuacion")
+            }
         }
     }
 

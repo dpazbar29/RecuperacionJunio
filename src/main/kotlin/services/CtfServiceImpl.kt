@@ -201,4 +201,16 @@ class CtfServiceImpl(private val ctfDAO: CtfDAO, private val dataSource: DataSou
         }
         return null
     }
+
+    override fun obtenerIDCtfs(): MutableList<Int> {
+        val ctfIDsRepetidos = obtenerTodo()
+        val ctfIDs: MutableList<Int> = mutableListOf()
+        for (ctf in ctfIDsRepetidos) {
+            if (!ctfIDs.contains(ctf.ctfID)) {
+                ctfIDs.add(ctf.ctfID)
+            }
+        }
+
+        return ctfIDs
+    }
 }

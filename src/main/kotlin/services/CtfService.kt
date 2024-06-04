@@ -91,4 +91,11 @@ interface CtfService {
         idGrupo: Int,
         idCtf: Int,
     ): Int?
+
+    /**
+     * Método que obtiene los ID de los diferentes CTFS que existen
+     *
+     * @return MutableList<Int>: Devuelve los ID pedidos
+     */
+    fun obtenerIDCtfs(): MutableList<Int>
 }
