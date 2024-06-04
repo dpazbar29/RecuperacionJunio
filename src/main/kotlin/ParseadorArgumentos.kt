@@ -43,7 +43,7 @@ class ParseadorArgumentos: Salida {
         }catch (e:NumberFormatException) {
             val id = "grupoID"
             val salida = mensajeErrorTipo(id)
-            println(salida)
+            throw NumberFormatException(salida)
         }
         return arrayOf(args[0], args[1])
     }
@@ -58,7 +58,7 @@ class ParseadorArgumentos: Salida {
         }catch (e:NumberFormatException) {
             val id = "grupoID"
             val salida = mensajeErrorTipo(id)
-            println(salida)
+            throw NumberFormatException(salida)
         }
         return arrayOf(args[0], args[1])
     }
@@ -74,7 +74,7 @@ class ParseadorArgumentos: Salida {
         }catch (e: NumberFormatException) {
             val id = "grupoID y ctfID"
             val salida = mensajeErrorTipo(id)
-            println(salida)
+            throw NumberFormatException(salida)
         }
         return arrayOf(args[0], args[1], args[2])
     }
@@ -89,7 +89,7 @@ class ParseadorArgumentos: Salida {
         }catch (e: NumberFormatException) {
             val id = "grupoID"
             val salida = mensajeErrorTipo(id)
-            println(salida)
+            throw NumberFormatException(salida)
         }
         return arrayOf(args[0], args[1], args[2])
     }
@@ -105,7 +105,7 @@ class ParseadorArgumentos: Salida {
         }catch (e: NumberFormatException) {
             val id = "grupoID y ctfID"
             val salida = mensajeErrorTipo(id)
-            println(salida)
+            throw NumberFormatException(salida)
         }
         return arrayOf(args[0], args[1], args[2], args[3])
     }
@@ -120,7 +120,7 @@ class ParseadorArgumentos: Salida {
         }catch (e: NumberFormatException){
             val id = "grupoID"
             val salida = mensajeErrorTipo(id)
-            println(salida)
+            throw NumberFormatException(salida)
         }
         return arrayOf(args[0], args[1])
     }
