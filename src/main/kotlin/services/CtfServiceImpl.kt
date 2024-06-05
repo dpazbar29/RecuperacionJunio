@@ -59,17 +59,7 @@ class CtfServiceImpl(private val ctfDAO: CtfDAO, private val dataSource: DataSou
      * @return CtfEntity?: Devuelve el CTF cuyo ID se ha dado
      */
     override fun obtenerPorIDCtf(id: Int): CtfEntity? {
-        val ctfs = obtenerTodo()
-        var ctfPorID: CtfEntity? = CtfEntity(0, 0, 0)
-
-        for (ctf in ctfs) {
-            if (ctf.ctfID == id) {
-                ctfPorID = CtfEntity(ctf.ctfID, ctf.grupoID, ctf.puntuacion)
-            } else {
-                ctfPorID = null
-            }
-        }
-        return ctfPorID
+        return obtenerTodo().find { it.ctfID == id }
     }
 
     /**
@@ -79,27 +69,8 @@ class CtfServiceImpl(private val ctfDAO: CtfDAO, private val dataSource: DataSou
      * @return List<CtfEntity>: Devuelve una lista con los CTFs en los que ha participado el grupo dado
      */
     override fun obtenerPorIDGrupo(id: Int): List<CtfEntity> {
-        val sqlID = "SELECT * FROM CTFS WHERE grupoID = ?"
-
-        return dataSource.connection.use { connID ->
-            connID.prepareStatement(sqlID).use { stmtID ->
-                stmtID.setInt(1, id)
-
-                val rs = stmtID.executeQuery()
-                val ctfs = mutableListOf<CtfEntity>()
-
-                while (rs.next()) {
-                    ctfs.add(
-                        CtfEntity(
-                            ctfID = rs.getInt("ctfid"),
-                            grupoID = rs.getInt("grupoid"),
-                            puntuacion = rs.getInt("puntuacion"),
-                        ),
-                    )
-                }
-                ctfs
-            }
-        }
+        val ctfs = obtenerTodo()
+        return ctfs.filter { it.grupoID == id }
     }
 
     /**
@@ -113,26 +84,8 @@ class CtfServiceImpl(private val ctfDAO: CtfDAO, private val dataSource: DataSou
         idGrupo: Int,
         idCtf: Int,
     ): CtfEntity? {
-        val sqlIDs = "SELECT * FROM CTFS WHERE grupoID = ? AND ctfID = ?"
-
-        return dataSource.connection.use { connIDs ->
-            connIDs.prepareStatement(sqlIDs).use { stmtIDs ->
-                stmtIDs.setInt(1, idGrupo)
-                stmtIDs.setInt(2, idCtf)
-
-                val rs = stmtIDs.executeQuery()
-
-                if (rs.next()) {
-                    CtfEntity(
-                        ctfID = rs.getInt("ctfid"),
-                        grupoID = rs.getInt("grupoid"),
-                        puntuacion = rs.getInt("puntuacion"),
-                    )
-                } else {
-                    null
-                }
-            }
-        }
+        val ctfs = obtenerTodo()
+        return ctfs.firstOrNull { it.ctfID == idCtf && it.grupoID == idGrupo }
     }
 
     /**
@@ -146,24 +99,9 @@ class CtfServiceImpl(private val ctfDAO: CtfDAO, private val dataSource: DataSou
         idGrupo: Int,
         idCtf: Int,
     ): Int {
-        val sqlID = "SELECT puntuacion FROM CTFS WHERE ctfID = ? AND grupoID = ?"
-        var puntuacion = 0
-        dataSource.connection.use { connID ->
-            connID.prepareStatement(sqlID).use { stmtID ->
-                stmtID.setInt(1, idCtf)
-                stmtID.setInt(2, idGrupo)
-
-                val rs = stmtID.executeQuery()
-                val ctfs = mutableListOf<CtfEntity>()
-
-                if (rs.next()) {
-                    puntuacion = rs.getInt("puntuacion")
-                }
-                ctfs
-            }
-        }
-
-        return puntuacion
+        val ctfs = obtenerTodo()
+        val ctfEncontrado = ctfs.firstOrNull { it.ctfID == idCtf && it.grupoID == idGrupo }
+        return ctfEncontrado?.puntuacion ?: 0
     }
 
     /**
@@ -177,20 +115,18 @@ class CtfServiceImpl(private val ctfDAO: CtfDAO, private val dataSource: DataSou
         idGrupo: Int,
         idCtf: Int,
     ): Int? {
-        val sql = "SELECT grupoid, puntuacion, RANK() OVER (PARTITION BY CTFid ORDER BY puntuacion DESC) AS posicion FROM CTFS WHERE CTFid = ?"
+        val todosCtfs = obtenerTodo()
 
-        dataSource.connection.use { conn ->
-            conn.prepareStatement(sql).use { stmt ->
-                stmt.setInt(1, idCtf)
+        val ctfsDelCtf = todosCtfs.filter { it.ctfID == idCtf }
 
-                val rs = stmt.executeQuery()
-                while (rs.next()) {
-                    if (rs.getInt("grupoid") == idGrupo) {
-                        return rs.getInt("posicion")
-                    }
-                }
+        val ctfsOrdenados = ctfsDelCtf.sortedByDescending { it.puntuacion }
+
+        for ((index, ctf) in ctfsOrdenados.withIndex()) {
+            if (ctf.grupoID == idGrupo) {
+                return index + 1
             }
         }
+
         return null
     }
 

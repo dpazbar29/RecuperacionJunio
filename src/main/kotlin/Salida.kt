@@ -30,11 +30,19 @@ interface Salida {
         println("Procesado: Eliminada participación del grupo '$grupo' en el CTF $idCtf.")
     }
 
-    fun mensajeEliminacionGrupo(grupo: String)  {
+    fun mensajeEliminacionGrupo(grupo: String) {
         println("Procesado: Eliminada el grupo '$grupo' y su participación en los CTFs")
     }
 
     fun mensajeFicheroInexistente(fichero: String): String {
         return ("El fichero no existe: $fichero")
+    }
+
+    fun mensajeCtfInexistente(id: Int) {
+        println("ERROR: El CTF con id $id no existe.")
+    }
+
+    fun mensajeParticipacionInexistente() {
+        println("ERROR: El grupo ya tiene una participación en el CTF.")
     }
 }
