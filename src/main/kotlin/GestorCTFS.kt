@@ -1,12 +1,19 @@
 import dao.CtfDAOH2
 import dao.GrupoDAOH2
-import services.CtfService
 import services.CtfServiceImpl
-import services.GrupoService
 import services.GrupoServiceImpl
 import javax.sql.DataSource
 
-open class GestorCTFS: AppCTFS {
+/**
+ * Clase que Gestiona las órdenes del usuario
+ */
+open class GestorCTFS : AppCTFS {
+    /**
+     * Método que gestiona los comandos y llama a la aplicación
+     *
+     * @param dataSource:
+     * @param comandos: Comandos que se derivarán a las opciones
+     */
     fun menu(
         dataSource: DataSource,
         comandos: Array<String>,

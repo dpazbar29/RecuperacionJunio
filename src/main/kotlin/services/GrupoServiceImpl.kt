@@ -62,8 +62,8 @@ class GrupoServiceImpl(private val grupoDAO: GrupoDAO, private val dataSource: D
     /**
      * Método que obtiene cuál ha sido la mejor posición de un grupo
      *
-     * @param grupoId: ID del grupo en cuestión
-     * @param ctfDAO: DAO del ctf del cuál se sacarán los datos
+     * @param grupoId: Id del grupo en cuestión
+     * @param ctfService: Service del ctf del cuál se sacarán los datos
      * @return Int: devuelve el número de la posición mejor del grupo
      */
 

@@ -129,27 +129,6 @@ class InterfazGrafica() {
             exportarContenido.append("\n")
         }
         File(nombreArchivo).writeText(exportarContenido.toString())
-        /*
-        val ctfs = ctfService.obtenerTodo()
-        val exportContent = StringBuilder()
-
-        ctfs.forEach { ctf ->
-            exportContent.append("CTF: ${ctf.ctfID}\n")
-            val participaciones =
-                ctfService.obtenerTodo()
-
-            participaciones.forEachIndexed { index, participacion ->
-                val grupos = ctfService.obtenerPorIDGrupo(participacion.grupoID)
-                for (grupo in grupos) {
-                    exportContent.append("${index + 1}. ${grupo.grupoID} (${participacion.puntuacion})\n")
-                }
-            }
-            exportContent.append("\n")
-        }
-
-        File(nombreArchivo).writeText(exportContent.toString())
-
-         */
     }
 
     fun start(dataSource: DataSource) {

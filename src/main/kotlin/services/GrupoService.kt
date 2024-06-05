@@ -1,6 +1,5 @@
 package services
 
-import dao.CtfDAO
 import dao.entity.GrupoEntity
 
 /**
@@ -40,7 +39,7 @@ interface GrupoService {
     /**
      * Método que obtiene los datos de un grupo por un ID dado
      *
-     * @param id: ID del grupo que queremos obtener
+     * @param id: Id del grupo que queremos obtener
      * @return GrupoEntity?: Devuelve el grupo cuyo ID se ha dado
      */
     fun obtenerPorID(id: Int): GrupoEntity?
@@ -48,8 +47,8 @@ interface GrupoService {
     /**
      * Método que obtiene cuál ha sido la mejor posición de un grupo
      *
-     * @param grupoId: ID del grupo en cuestión
-     * @param ctfDAO: DAO del ctf del cuál se sacarán los datos
+     * @param grupoId: Id del grupo en cuestión
+     * @param ctfService: Service del ctf del cuál se sacarán los datos
      * @return Int: devuelve el número de la posición mejor del grupo
      */
     fun obtenerMejorPosCTFIdParaGrupo(

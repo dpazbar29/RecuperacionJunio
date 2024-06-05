@@ -4,7 +4,16 @@ import services.CtfService
 import services.GrupoService
 import javax.sql.DataSource
 
+/**
+ * Interfaz con la lógica de cada función del programa
+ */
 interface AppCTFS : Salida {
+    /**
+     * Método que añade un grupo a la base de datos
+     *
+     * @param comandos: Comandos introducidos para la creación del grupo
+     * @param grupoService: Service de los grupos para llevar a cabo la creación del grupo
+     */
     fun anadirGrupo(
         comandos: Array<String>,
         grupoService: GrupoService,
@@ -12,7 +21,6 @@ interface AppCTFS : Salida {
         val grupoDesc = comandos[1]
         val posicion = null
 
-        // Obtener el siguiente grupoID disponible
         val gruposExistentes = grupoService.obtenerTodo()
         val grupoID =
             if (gruposExistentes.isEmpty()) {
@@ -26,6 +34,13 @@ interface AppCTFS : Salida {
         mensajeCreacionGrupo(grupoDesc)
     }
 
+    /**
+     * Método que añade una participación a la base de datos
+     *
+     * @param comandos: Comandos introducidos para la creación de la participación
+     * @param grupoService: Service de los grupos para llevar a cabo la eliminación de la participación del CTF
+     * @param ctfService: Service de los CTFS para llevar a cabo la eliminación de la participación del CTF
+     */
     fun anadirParticipacion(
         comandos: Array<String>,
         grupoService: GrupoService,
@@ -61,6 +76,12 @@ interface AppCTFS : Salida {
         }
     }
 
+    /**
+     * Método que elimina un grupo de la base de datos
+     *
+     * @param comandos: Comandos necesarios para la eliminación del grupo
+     * @param grupoService: Service de los grupos para llevar a cabo la eliminación del grupo
+     */
     fun eliminarGrupo(
         comandos: Array<String>,
         grupoService: GrupoService,
@@ -74,6 +95,13 @@ interface AppCTFS : Salida {
         grupoService.borrar(grupoID)
     }
 
+    /**
+     * Método que elimina una participación de la base de datos
+     *
+     * @param comandos: Comandos introducidos para la eliminación de la participación
+     * @param grupoService: Service de los grupos para llevar a cabo la creación del CTF
+     * @param ctfService: Service de los CTFS para llevar a cabo la creación del CTF
+     */
     fun eliminarParticipacion(
         comandos: Array<String>,
         grupoService: GrupoService,
@@ -96,6 +124,13 @@ interface AppCTFS : Salida {
         }
     }
 
+    /**
+     * Método que muestra la participación de los grupos en los CTFS
+     *
+     * @param comandos: Comandos introducidos para mostrar las participaciones de los grupos
+     * @param grupoService: Service de los grupos para llevar a cabo la muestra de información
+     * @param ctfService: Service de los CTFS para llevar a cabo la muestra de información
+     */
     fun mostrarInformacionGrupos(
         comandos: Array<String>,
         grupoService: GrupoService,
@@ -104,6 +139,12 @@ interface AppCTFS : Salida {
         mostrarDatosGruposConsola(comandos, grupoService, ctfService) // DUDA
     }
 
+    /**
+     * Método que muestra la información de todos los grupos
+     *
+     * @param grupoService: Service de los grupos para llevar a cabo la muestra de información
+     * @param ctfService: Service de los CTFS para llevar a cabo la muestra de información
+     */
     private fun mostrarTodosLosGrupos(
         grupoService: GrupoService,
         ctfService: CtfService,
@@ -125,6 +166,13 @@ interface AppCTFS : Salida {
         }
     }
 
+    /**
+     * Método que muestra la información de un grupo o todos los grupos
+     *
+     * @param comandos: Comandos con la información
+     * @param grupoService: Service de los grupos para llevar a cabo la muestra de información
+     * @param ctfService: Service de los CTFS para llevar a cabo la muestra de información
+     */
     private fun mostrarDatosGruposConsola(
         comandos: Array<String>,
         grupoService: GrupoService,
@@ -148,6 +196,13 @@ interface AppCTFS : Salida {
         }
     }
 
+    /**
+     * Método que muestra la información de la participación de un grupo
+     *
+     * @param comandos: Comandos con la información para mostrar la participación de un grupo
+     * @param grupoService: Service de los grupos para llevar a cabo la muestra de información
+     * @param ctfService: Service de los CTFS para llevar a cabo la muestra de información
+     */
     fun mostrarParticipacionGrupo(
         comandos: Array<String>,
         grupoService: GrupoService,
@@ -156,6 +211,13 @@ interface AppCTFS : Salida {
         mostrarDatosCTFConsola(comandos, grupoService, ctfService) // DUDA
     }
 
+    /**
+     * Método que lleva a cabo la muestra de la información de todos los grupos
+     *
+     * @param comandos: Comandos con la información para mostrar la participación de un grupo
+     * @param grupoService: Service de los grupos para llevar a cabo la muestra de información
+     * @param ctfService: Service de los CTFS para llevar a cabo la muestra de información
+     */
     private fun mostrarDatosCTFConsola(
         comandos: Array<String>,
         grupoService: GrupoService,
@@ -192,6 +254,12 @@ interface AppCTFS : Salida {
         }
     }
 
+    /**
+     * Método que realiza el procesamiento por lotes
+     *
+     * @param comandos: Comandos para llevar a cabo el procesamiento por lotes
+     * @param dataSource:
+     */
     fun procesamientoPorLotes(
         comandos: Array<String>,
         dataSource: DataSource,
@@ -205,6 +273,11 @@ interface AppCTFS : Salida {
         }
     }
 
+    /**
+     * Método que lanza la interfaz gráfica
+     *
+     * @param dataSource:
+     */
     fun interfazGrafica(dataSource: DataSource) {
         val interfazGrafica = InterfazGrafica()
         interfazGrafica.start(dataSource)

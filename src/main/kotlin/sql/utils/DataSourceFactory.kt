@@ -4,12 +4,26 @@ import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
 import javax.sql.DataSource
 
+/**
+ * Objeto que lleva a cabo la conexión de la base de datos
+ */
+
 object DataSourceFactory {
+    /**
+     * Enum Class que contiene los tipos de fuente de datos de la base de datos
+     */
     enum class DataSourceType {
         HIKARI,
         JDBC,
     }
 
+    /**
+     * Método que realiza la conexión a la base de datos
+     *
+     * @param dataSourceType: Tipo de fuente de datos
+     *
+     * @return DataSource
+     */
     fun getDS(dataSourceType: DataSourceType): DataSource {
         return when (dataSourceType) {
             DataSourceType.HIKARI -> {
