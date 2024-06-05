@@ -59,25 +59,17 @@ class CtfServiceImpl(private val ctfDAO: CtfDAO, private val dataSource: DataSou
      * @return CtfEntity?: Devuelve el CTF cuyo ID se ha dado
      */
     override fun obtenerPorIDCtf(id: Int): CtfEntity? {
-        val sqlID = "SELECT * FROM CTFS WHERE ctfID = ?"
+        val ctfs = obtenerTodo()
+        var ctfPorID: CtfEntity? = CtfEntity(0, 0, 0)
 
-        return dataSource.connection.use { connID ->
-            connID.prepareStatement(sqlID).use { stmtID ->
-                stmtID.setInt(1, id)
-
-                val rs = stmtID.executeQuery()
-
-                if (rs.next()) {
-                    CtfEntity(
-                        ctfID = rs.getInt("ctfid"),
-                        grupoID = rs.getInt("grupoid"),
-                        puntuacion = rs.getInt("puntuacion"),
-                    )
-                } else {
-                    null
-                }
+        for (ctf in ctfs) {
+            if (ctf.ctfID == id) {
+                ctfPorID = CtfEntity(ctf.ctfID, ctf.grupoID, ctf.puntuacion)
+            } else {
+                ctfPorID = null
             }
         }
+        return ctfPorID
     }
 
     /**
