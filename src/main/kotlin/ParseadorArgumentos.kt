@@ -1,121 +1,56 @@
 @Suppress("ktlint:standard:max-line-length")
 class ParseadorArgumentos : Salida {
     fun parsearArgumentos(args: Array<String>): Array<String> {
+        require(args.isNotEmpty()) { "No se han proporcionado argumentos" }
+
+        val comando = args[0]
+        val parametros = args.drop(1).toTypedArray()
+
         val comandos: Array<String> =
-            when (args[0]) {
-                "-g" -> comandoG(args)
-                "-p" -> comandoP(args)
-                "-t" -> comandoT(args)
-                "-e" -> comandoE(args)
-                "-l" -> comandoL(args)
-                "-c" -> comandoC(args)
-                "-f" -> comandoF(args)
-                "-i" -> comandoI(args)
-                else -> {
-                    throw IllegalArgumentException("Comando desconocido: ${args[0]}")
-                }
+            when (comando) {
+                "-g" -> verificarNumeroParametros(comando, parametros, 1)
+                "-p" ->
+                    verificarNumeroParametros(comando, parametros, 3) {
+                        verificarEsEntero(parametros[0], "grupoID")
+                        verificarEsEntero(parametros[1], "ctfID")
+                    }
+                "-t", "-l", "-c" -> verificarNumeroParametros(comando, parametros, 1) { verificarEsEntero(parametros[0], "grupoID") }
+                "-e" ->
+                    verificarNumeroParametros(comando, parametros, 2) {
+                        verificarEsEntero(parametros[0], "grupoID")
+                        verificarEsEntero(parametros[1], "ctfID")
+                    }
+                "-f" -> verificarNumeroParametros(comando, parametros, 1)
+                "-i" -> verificarNumeroParametros(comando, parametros, 0)
+                else -> throw IllegalArgumentException("Comando desconocido: $comando")
             }
-        return comandos
+
+        return arrayOf(comando, *parametros)
     }
 
-    private fun comandoI(args: Array<String>): Array<String> {
-        if (args.size != 1) {
+    private fun verificarNumeroParametros(
+        comando: String,
+        parametros: Array<String>,
+        numEsperado: Int,
+        validacionAdicional: (() -> Unit)? = null,
+    ): Array<String> {
+        if (parametros.size != numEsperado) {
             val salida = mensajeErrorNumeroParametros()
             throw IllegalArgumentException(salida)
         }
-        return arrayOf(args[0])
+        validacionAdicional?.invoke()
+        return arrayOf(comando, *parametros)
     }
 
-    private fun comandoF(args: Array<String>): Array<String> {
-        if (args.size != 2) {
-            val salida = mensajeErrorNumeroParametros()
-            throw IllegalArgumentException(salida)
-        }
-        return arrayOf(args[0], args[1])
-    }
-
-    private fun comandoC(args: Array<String>): Array<String> {
-        if (args.size != 2) {
-            val salida = mensajeErrorNumeroParametros()
-            throw IllegalArgumentException(salida)
-        }
+    private fun verificarEsEntero(
+        valor: String,
+        id: String,
+    ) {
         try {
-            args[1].toInt()
+            valor.toInt()
         } catch (e: NumberFormatException) {
-            val id = "grupoID"
             val salida = mensajeErrorTipo(id)
             throw NumberFormatException(salida)
         }
-        return arrayOf(args[0], args[1])
-    }
-
-    private fun comandoL(args: Array<String>): Array<String> {
-        if (args.size != 2) {
-            val salida = mensajeErrorNumeroParametros()
-            throw IllegalArgumentException(salida)
-        }
-        try {
-            args[1].toInt()
-        } catch (e: NumberFormatException) {
-            val id = "grupoID"
-            val salida = mensajeErrorTipo(id)
-            throw NumberFormatException(salida)
-        }
-        return arrayOf(args[0], args[1])
-    }
-
-    private fun comandoE(args: Array<String>): Array<String> {
-        if (args.size != 3) {
-            val salida = mensajeErrorNumeroParametros()
-            throw IllegalArgumentException(salida)
-        }
-        try {
-            args[1].toInt()
-            args[2].toInt()
-        } catch (e: NumberFormatException) {
-            val id = "grupoID y ctfID"
-            val salida = mensajeErrorTipo(id)
-            throw NumberFormatException(salida)
-        }
-        return arrayOf(args[0], args[1], args[2])
-    }
-
-    private fun comandoG(args: Array<String>): Array<String> {
-        if (args.size != 2) {
-            val salida = mensajeErrorNumeroParametros()
-            throw IllegalArgumentException(salida)
-        }
-        return arrayOf(args[0], args[1])
-    }
-
-    private fun comandoP(args: Array<String>): Array<String> {
-        if (args.size != 4) {
-            val salida = mensajeErrorNumeroParametros()
-            throw IllegalArgumentException(salida)
-        }
-        try {
-            args[1].toInt()
-            args[2].toInt()
-        } catch (e: NumberFormatException) {
-            val id = "grupoID y ctfID"
-            val salida = mensajeErrorTipo(id)
-            throw NumberFormatException(salida)
-        }
-        return arrayOf(args[0], args[1], args[2], args[3])
-    }
-
-    private fun comandoT(args: Array<String>): Array<String> {
-        if (args.size != 2) {
-            val salida = mensajeErrorNumeroParametros()
-            throw IllegalArgumentException(salida)
-        }
-        try {
-            args[1].toInt()
-        } catch (e: NumberFormatException) {
-            val id = "grupoID"
-            val salida = mensajeErrorTipo(id)
-            throw NumberFormatException(salida)
-        }
-        return arrayOf(args[0], args[1])
     }
 }
