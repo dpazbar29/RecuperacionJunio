@@ -3,14 +3,13 @@ package services
 import dao.GrupoDAO
 import dao.entity.CtfEntity
 import dao.entity.GrupoEntity
-import javax.sql.DataSource
 
 /**
  * Clase que emplea los métodos del Servicio del Grupo
  *
  * @property grupoDAO: objeto del DAO del grupo donde se lleva a cabo el código de estas funciones
  */
-class GrupoServiceImpl(private val grupoDAO: GrupoDAO, private val dataSource: DataSource) : GrupoService {
+class GrupoServiceImpl(private val grupoDAO: GrupoDAO) : GrupoService {
     /**
      * Método que crea un nuevo grupo con sus datos correspondientes
      *
@@ -71,7 +70,7 @@ class GrupoServiceImpl(private val grupoDAO: GrupoDAO, private val dataSource: D
         grupoId: Int,
         ctfService: CtfService,
     ): Int {
-        var id: Int = 0
+        var id = 0
         var posicion = Int.MAX_VALUE // Valor máximo de un entero para que siempre sea mayor que la primera posición que se analice
         var puntuacion = 0
         val participaciones: List<CtfEntity> = ctfService.obtenerPorIDGrupo(grupoId)

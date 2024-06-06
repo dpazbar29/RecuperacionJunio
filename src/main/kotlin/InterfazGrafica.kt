@@ -24,7 +24,7 @@ import services.GrupoServiceImpl
 import java.io.File
 import javax.sql.DataSource
 
-class InterfazGrafica() {
+class InterfazGrafica {
     @Suppress("ktlint:standard:function-naming")
     @Composable
     @Preview
@@ -58,8 +58,8 @@ class InterfazGrafica() {
                     val ctfDAO = CtfDAOH2(dataSource)
                     val grupoDAO = GrupoDAOH2(dataSource)
 
-                    val ctfService = CtfServiceImpl(ctfDAO, dataSource)
-                    val grupoService = GrupoServiceImpl(grupoDAO, dataSource)
+                    val ctfService = CtfServiceImpl(ctfDAO)
+                    val grupoService = GrupoServiceImpl(grupoDAO)
 
                     exportarClasificacionFinal(ctfService, grupoService, "clasificacion_final.txt")
                 },
@@ -85,7 +85,7 @@ class InterfazGrafica() {
         dataSource: DataSource
     ) {
         val grupoDAO = GrupoDAOH2(dataSource)
-        val grupoService = GrupoServiceImpl(grupoDAO, dataSource)
+        val grupoService = GrupoServiceImpl(grupoDAO)
         val grupos = if (text.isBlank()) {
             grupoDAO.obtenerTodo()
         } else {

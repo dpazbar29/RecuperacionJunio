@@ -184,8 +184,8 @@ interface AppCTFS : Salida {
             mostrarTodosLosGrupos(grupoService, ctfService)
         } else {
             val ctfs: List<CtfEntity> = ctfService.obtenerPorIDGrupo(grupoID)
-            println("Procesando: Listado participación del grupo '${grupo?.grupoDesc}'")
-            println("GRUPO: ${grupo?.grupoID}   ${grupo?.grupoDesc}    CTF CON MEJOR POSICIÓN: ${grupo?.mejorPosCtfID}")
+            println("Procesando: Listado participación del grupo '${grupo.grupoDesc}'")
+            println("GRUPO: ${grupo.grupoID}   ${grupo.grupoDesc}    CTF CON MEJOR POSICIÓN: ${grupo.mejorPosCtfID}")
             println()
             println("  CTF  | PUNTUACIÓN | POSICIÓN ")
             println("-------------------------------")
@@ -229,13 +229,13 @@ interface AppCTFS : Salida {
         val ctf: CtfEntity? = ctfService.obtenerPorIDCtf(ctfID)
 
         if (ctf != null && ctf.ctfID != 0) {
-            println("Procesando: Listado participación en el CTF '${ctf?.ctfID}' ")
+            println("Procesando: Listado participación en el CTF '${ctf.ctfID}' ")
             println()
             println("GRUPO    | PUNTUACIÓN ")
             println("----------------------")
 
             val puntuaciones = mutableListOf<Pair<String, Int>>()
-            var puntuacion = 0
+            var puntuacion: Int
             for (grupo in grupos) {
                 puntuacion = ctfService.obtenerPuntuacionPorIDGrupoIDCtf(grupo.grupoID, ctf.ctfID)
 
@@ -244,9 +244,9 @@ interface AppCTFS : Salida {
 
             val puntuacionesOrdenadas = puntuaciones.sortedByDescending { it.second }
 
-            for ((grupoDesc, puntuacion) in puntuacionesOrdenadas) {
-                if (puntuacion != 0) {
-                    println("$grupoDesc  | $puntuacion")
+            for ((grupoDesc, puntuacionEnOrden) in puntuacionesOrdenadas) {
+                if (puntuacionEnOrden != 0) {
+                    println("$grupoDesc  | $puntuacionEnOrden")
                 }
             }
         } else {

@@ -4,7 +4,7 @@ import java.io.FileNotFoundException
 /**
  * Clase que procesa los ficheros con datos para la ejecución del programa
  */
-class ProcesadorFicheros() : Salida {
+class ProcesadorFicheros : Salida {
 
     /**
      * Método que procesa el fichero dado para extraer los comandos dados en este
@@ -19,7 +19,7 @@ class ProcesadorFicheros() : Salida {
         comprobadorArchivo(fichero, rutaFichero)
 
         val lineas = fichero.readLines()
-        var comandoActual: String = ""
+        var comandoActual = ""
 
         lineas.forEach { linea ->
             val lineaRecortada = linea.trim()
@@ -57,10 +57,8 @@ class ProcesadorFicheros() : Salida {
      * @param argumentos: Lista mutable donde se introducirán los comandos y sus valores
      */
     private fun selectorComandos(comandoActual: String, lineaRecortada: String, argumentos: MutableList<List<String>>) {
-        if (comandoActual != null) {
-            val argumentosLinea = mutableListOf(comandoActual)
-            argumentosLinea.addAll(lineaRecortada.split(";"))
-            argumentos.add(argumentosLinea)
-        }
+        val argumentosLinea = mutableListOf(comandoActual)
+        argumentosLinea.addAll(lineaRecortada.split(";"))
+        argumentos.add(argumentosLinea)
     }
 }

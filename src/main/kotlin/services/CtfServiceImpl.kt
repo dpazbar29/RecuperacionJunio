@@ -2,14 +2,13 @@ package services
 
 import dao.CtfDAO
 import dao.entity.CtfEntity
-import javax.sql.DataSource
 
 /**
  * Clase que emplea los métodos del Servicio del CTF
  *
  * @property ctfDAO: objeto del DAO del CTF donde se lleva a cabo el código de estas funciones
  */
-class CtfServiceImpl(private val ctfDAO: CtfDAO, private val dataSource: DataSource) : CtfService {
+class CtfServiceImpl(private val ctfDAO: CtfDAO) : CtfService {
     /**
      * Método que crea un nuevo CTF con sus datos correspondientes
      *

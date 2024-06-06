@@ -1,6 +1,5 @@
 package dao
 
-import dao.entity.CtfEntity
 import dao.entity.GrupoEntity
 import javax.sql.DataSource
 

@@ -21,8 +21,8 @@ open class GestorCTFS : AppCTFS {
         val grupoDao = GrupoDAOH2(dataSource)
         val ctfDao = CtfDAOH2(dataSource)
 
-        val grupoService = GrupoServiceImpl(grupoDao, dataSource)
-        val ctfService = CtfServiceImpl(ctfDao, dataSource)
+        val grupoService = GrupoServiceImpl(grupoDao)
+        val ctfService = CtfServiceImpl(ctfDao)
 
         when (comandos[0]) {
             "-g" -> anadirGrupo(comandos, grupoService)
