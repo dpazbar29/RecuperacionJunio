@@ -46,16 +46,7 @@ class InterfazGrafica() {
 
             Button(
                 onClick = {
-                    val grupoDAO = GrupoDAOH2(dataSource)
-                    val grupoService = GrupoServiceImpl(grupoDAO, dataSource)
-                    grupos =
-                        if (text.isBlank()) {
-                            grupoDAO.obtenerTodo()
-                        } else {
-                            val grupo = grupoService.obtenerPorID(text.toInt())
-                            if (grupo != null) listOf(grupo) else emptyList()
-                        }
-                    text = ""
+                    mostrar(text, {text = it}, {grupos = it}, dataSource)
                 },
                 modifier = Modifier.padding(8.dp).width(150.dp),
             ) {
@@ -85,6 +76,24 @@ class InterfazGrafica() {
                 }
             }
         }
+    }
+
+    private fun mostrar(
+        text: String,
+        setText: (String) -> Unit,
+        setGrupos: (List<GrupoEntity>) -> Unit,
+        dataSource: DataSource
+    ) {
+        val grupoDAO = GrupoDAOH2(dataSource)
+        val grupoService = GrupoServiceImpl(grupoDAO, dataSource)
+        val grupos = if (text.isBlank()) {
+            grupoDAO.obtenerTodo()
+        } else {
+            val grupo = grupoService.obtenerPorID(text.toInt())
+            if (grupo != null) listOf(grupo) else emptyList()
+        }
+        setGrupos(grupos)
+        setText("")
     }
 
     private fun exportarClasificacionFinal(

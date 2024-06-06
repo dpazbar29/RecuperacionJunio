@@ -7,5 +7,6 @@ GRUPO    | PUNTUACIÓN
 Procesando: Listado participación en el CTF '2' 
 GRUPO    | PUNTUACIÓN 
 ----------------------
+1DAM-G3  | 10
 1DAM-G2  | 1
 
