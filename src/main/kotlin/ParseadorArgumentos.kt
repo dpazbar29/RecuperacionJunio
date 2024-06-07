@@ -6,24 +6,23 @@ class ParseadorArgumentos(private val salida: Salida) {
         val comando = args[0]
         val parametros = args.drop(1).toTypedArray()
 
-        val comandos: Array<String> =
-            when (comando) {
-                "-g" -> verificarNumeroParametros(comando, parametros, 1)
-                "-p" ->
-                    verificarNumeroParametros(comando, parametros, 3) {
-                        verificarEsEntero(parametros[0], "grupoID")
-                        verificarEsEntero(parametros[1], "ctfID")
-                    }
-                "-t", "-l", "-c" -> verificarNumeroParametros(comando, parametros, 1) { verificarEsEntero(parametros[0], "grupoID") }
-                "-e" ->
-                    verificarNumeroParametros(comando, parametros, 2) {
-                        verificarEsEntero(parametros[0], "grupoID")
-                        verificarEsEntero(parametros[1], "ctfID")
-                    }
-                "-f" -> verificarNumeroParametros(comando, parametros, 1)
-                "-i" -> verificarNumeroParametros(comando, parametros, 0)
-                else -> throw IllegalArgumentException("Comando desconocido: $comando")
-            }
+        when (comando) {
+            "-g" -> verificarNumeroParametros(comando, parametros, 1)
+            "-p" ->
+                verificarNumeroParametros(comando, parametros, 3) {
+                    verificarEsEntero(parametros[0], "grupoID")
+                    verificarEsEntero(parametros[1], "ctfID")
+                }
+            "-t", "-l", "-c" -> verificarNumeroParametros(comando, parametros, 1) { verificarEsEntero(parametros[0], "grupoID") }
+            "-e" ->
+                verificarNumeroParametros(comando, parametros, 2) {
+                    verificarEsEntero(parametros[0], "grupoID")
+                    verificarEsEntero(parametros[1], "ctfID")
+                }
+            "-f" -> verificarNumeroParametros(comando, parametros, 1)
+            "-i" -> verificarNumeroParametros(comando, parametros, 0)
+            else -> throw IllegalArgumentException("Comando desconocido: $comando")
+        }
 
         return arrayOf(comando, *parametros)
     }
