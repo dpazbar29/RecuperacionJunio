@@ -7,7 +7,7 @@ import javax.sql.DataSource
 /**
  * Clase que Gestiona las órdenes del usuario
  */
-open class GestorCTFS : AppCTFS {
+open class GestorCTFS(private val appCTFS: AppCTFS) {
     /**
      * Método que gestiona los comandos y llama a la aplicación
      *
@@ -25,14 +25,14 @@ open class GestorCTFS : AppCTFS {
         val ctfService = CtfServiceImpl(ctfDao)
 
         when (comandos[0]) {
-            "-g" -> anadirGrupo(comandos, grupoService)
-            "-p" -> anadirParticipacion(comandos, grupoService, ctfService)
-            "-t" -> eliminarGrupo(comandos, grupoService)
-            "-e" -> eliminarParticipacion(comandos, grupoService, ctfService)
-            "-l" -> mostrarInformacionGrupos(comandos, grupoService, ctfService)
-            "-c" -> mostrarParticipacionGrupo(comandos, grupoService, ctfService)
-            "-f" -> procesamientoPorLotes(comandos, dataSource)
-            "-i" -> interfazGrafica(dataSource)
+            "-g" -> appCTFS.anadirGrupo(comandos, grupoService)
+            "-p" -> appCTFS.anadirParticipacion(comandos, grupoService, ctfService)
+            "-t" -> appCTFS.eliminarGrupo(comandos, grupoService)
+            "-e" -> appCTFS.eliminarParticipacion(comandos, grupoService, ctfService)
+            "-l" -> appCTFS.mostrarInformacionGrupos(comandos, grupoService, ctfService)
+            "-c" -> appCTFS.mostrarParticipacionGrupo(comandos, grupoService, ctfService)
+            "-f" -> appCTFS.procesamientoPorLotes(comandos, dataSource)
+            "-i" -> appCTFS.interfazGrafica(dataSource)
         }
     }
 }

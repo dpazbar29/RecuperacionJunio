@@ -7,7 +7,7 @@ import javax.sql.DataSource
 /**
  * Interfaz con la lógica de cada función del programa
  */
-interface AppCTFS : Salida {
+class AppCTFS(private val salida: Salida) {
     /**
      * Método que añade un grupo a la base de datos
      *
@@ -29,9 +29,19 @@ interface AppCTFS : Salida {
                 gruposExistentes.maxOf { it.grupoID } + 1
             }
 
-        val grupo = GrupoEntity(grupoID, grupoDesc, posicion)
-        grupoService.crear(grupo)
-        mensajeCreacionGrupo(grupoDesc)
+        var bool = false
+        for (grup in gruposExistentes) {
+            if (grup.grupoDesc == grupoDesc) {
+                salida.mensajeGrupoExiste(grup.grupoDesc)
+                bool = true
+            }
+        }
+
+        if (!bool) {
+            val grupo = GrupoEntity(grupoID, grupoDesc, posicion)
+            grupoService.crear(grupo)
+            salida.mensajeCreacionGrupo(grupoDesc)
+        }
     }
 
     /**
@@ -70,9 +80,9 @@ interface AppCTFS : Salida {
                 grupoService.actualizar(grupoActualizacion)
             }
 
-            mensajeCreacionParticipacion(datosGrupo?.grupoDesc ?: "Desconocido", ctfID, puntuacion)
+            salida.mensajeCreacionParticipacion(datosGrupo?.grupoDesc ?: "Desconocido", ctfID, puntuacion)
         } else {
-            mensajeParticipacionInexistente()
+            salida.mensajeParticipacionInexistente()
         }
     }
 
@@ -90,7 +100,7 @@ interface AppCTFS : Salida {
 
         val grupo = grupoService.obtenerPorID(grupoID)
         if (grupo != null) {
-            mensajeEliminacionGrupo(grupo.grupoDesc)
+            salida.mensajeEliminacionGrupo(grupo.grupoDesc)
         }
         grupoService.borrar(grupoID)
     }
@@ -120,7 +130,7 @@ interface AppCTFS : Salida {
         grupoService.actualizar(grupoActualizacion)
 
         if (grupo != null) {
-            mensajeEliminacionParticipacion(grupo.grupoDesc, ctfID)
+            salida.mensajeEliminacionParticipacion(grupo.grupoDesc, ctfID)
         }
     }
 
@@ -250,7 +260,7 @@ interface AppCTFS : Salida {
                 }
             }
         } else {
-            mensajeCtfInexistente(ctfID)
+            salida.mensajeCtfInexistente(ctfID)
         }
     }
 
@@ -264,12 +274,13 @@ interface AppCTFS : Salida {
         comandos: Array<String>,
         dataSource: DataSource,
     ) {
-        val procesador = ProcesadorFicheros()
+        val procesador = ProcesadorFicheros(salida)
         val rutaFichero = comandos[1]
         val nuevosComandos = procesador.procesarFichero(rutaFichero)
-        val app = GestorCTFS()
+        val appCTFS = AppCTFS(salida)
+        val gestorCTFS = GestorCTFS(appCTFS)
         for (comandoExtraido in nuevosComandos) {
-            app.menu(dataSource, comandoExtraido.toTypedArray())
+            gestorCTFS.menu(dataSource, comandoExtraido.toTypedArray())
         }
     }
 
