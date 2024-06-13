@@ -10,7 +10,7 @@ fun main(args: Array<String>) {
     val argumentos = ParseadorArgumentos(salida)
     val comandos: Array<String> = argumentos.parsearArgumentos(args)
 
-    val appCTFS = AppCTFS(salida)
-    val gestorCTFS = GestorCTFS(appCTFS)
-    gestorCTFS.menu(dataSource, comandos)
+    val gestorCTFs = GestorCTFs(salida)
+    val appCTFs = AppCTFs(gestorCTFs)
+    appCTFs.menu(dataSource, comandos)
 }

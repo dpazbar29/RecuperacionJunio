@@ -1,4 +1,5 @@
-class Salida() {
+class Salida()
+{
     fun mensajeError(): String {
         return ("ERROR: El programa no ha recibido parámetros o estos no son adecuados.")
     }

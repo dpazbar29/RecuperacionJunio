@@ -7,7 +7,7 @@ import javax.sql.DataSource
 /**
  * Clase que Gestiona las órdenes del usuario
  */
-open class GestorCTFS(private val appCTFS: AppCTFS) {
+open class AppCTFs(private val appCTFS: GestorCTFs) {
     /**
      * Método que gestiona los comandos y llama a la aplicación
      *

@@ -7,7 +7,7 @@ import javax.sql.DataSource
 /**
  * Interfaz con la lógica de cada función del programa
  */
-class AppCTFS(private val salida: Salida) {
+class GestorCTFs(private val salida: Salida) {
     /**
      * Método que añade un grupo a la base de datos
      *
@@ -71,6 +71,8 @@ class AppCTFS(private val salida: Salida) {
             } else {
                 ctfService.crear(participacionGrupo)
             }
+
+
 
             val posicion = grupoService.obtenerMejorPosCTFIdParaGrupo(grupoID, ctfService)
             val datosGrupo = grupoService.obtenerPorID(grupoID)
@@ -277,8 +279,8 @@ class AppCTFS(private val salida: Salida) {
         val procesador = ProcesadorFicheros(salida)
         val rutaFichero = comandos[1]
         val nuevosComandos = procesador.procesarFichero(rutaFichero)
-        val appCTFS = AppCTFS(salida)
-        val gestorCTFS = GestorCTFS(appCTFS)
+        val appCTFS = GestorCTFs(salida)
+        val gestorCTFS = AppCTFs(appCTFS)
         for (comandoExtraido in nuevosComandos) {
             gestorCTFS.menu(dataSource, comandoExtraido.toTypedArray())
         }
